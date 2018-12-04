@@ -50,6 +50,11 @@ class App extends Component {
       text: {
         smartGuide: true
       },
+       /*
+      // for rest only
+      triggers: {
+        exportContent: 'QUIET_PERIOD'
+      },*/
       recognitionParams: {
         type: 'MATH',
         protocol: 'WEBSOCKET',
