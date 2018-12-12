@@ -14,47 +14,52 @@ const editorStyle = {
 
 class App extends Component {
   state = {
-    katex: ''
+    katex: '',
+    jixx: '',
+    jixxExport: ''
   }
   render() {
-    const { katex } = this.state
-    console.log("debug katex", katex)
+    const { katex, jixx, jixxExport } = this.state
+
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Katexstructor</h1>
         </header>
-        <div style={{height: 50}}>
+        <div style={{height: 100}}>
+        {jixxExport && <button onClick={this.import}>Import</button>}
+        {jixx && <button onClick={this.export}>Export</button>}
         {katex && <button onClick={this.clear}>Effacer</button>}
         {katex && <BlockMath math={katex} />}
         </div>
-        <div style={editorStyle} ref="editor">
-        
-        </div>
+        <div style={editorStyle} ref="editor"></div>
       </div>
-    );
+    )
   }
   clear = () => {
     this.editor.clear()
   }
+  export = () => {
+    this.setState(prevState => ({
+      jixxExport: prevState.jixx 
+    }))
+  }
+
+  import = () => {
+    this.editor.clear()
+    this.editor.import_(this.state.jixxExport, 'application/vnd.myscript.jiix')
+  }
   onValue = (e) => {
     const katex = get(e, ['detail', 'exports', 'application/x-latex'])
-    console.log("debug katex", katex, e)
+    const jixx = get(e, ['detail', 'exports', 'application/vnd.myscript.jiix'])
     this.setState({
-      katex
+      katex,
+      jixx
     })
   }
   componentDidMount() {
     this.editor = MyScriptJS.register(this.refs.editor, {
-      text: {
-        smartGuide: true
-      },
-       /*
-      // for rest only
-      triggers: {
-        exportContent: 'QUIET_PERIOD'
-      },*/
       recognitionParams: {
         type: 'MATH',
         protocol: 'WEBSOCKET',
@@ -66,8 +71,14 @@ class App extends Component {
           hmacKey: '89c5e734-e5c8-4ac2-ba27-7616321d3305',
         },
         v4: {
+          alwaysConnected: true,
           math: {
-            mimeTypes: ['application/x-latex']
+            mimeTypes: ['application/x-latex', 'application/vnd.myscript.jiix']
+          },
+          export: {
+            jiix: {
+              strokes: true,
+            }
           }
         }
       },
