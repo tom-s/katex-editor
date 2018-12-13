@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "lodash": "^4.17.11",
-    "myscript": "^4.1.0",
+    "mathlive": "^0.23.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-katex": "^2.0.2"
