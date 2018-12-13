@@ -41,9 +41,8 @@ class App extends Component {
     this.editor.clear()
   }
   export = () => {
-    console.log("debug export", prevState.jixx)
     this.setState(prevState => ({
-      jixxExport: prevState.jixx 
+      jixxExport: prevState.jixx
     }))
   }
 
